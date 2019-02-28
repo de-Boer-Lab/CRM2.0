@@ -8,5 +8,5 @@ setup(
      packages=find_packages(),
      url='https://github.com/Carldeboer/CisRegModels',
      install_requires=['tensorflow','numpy','datetime'],
-     scripts=['collapsePromoters.py','mergeSeqsByBowtie.py','seqsToOHC.py','translateSequencesByDict.py','alignFastqsIntoSeqs.py','makeThermodynamicEnhancosomeModel.py', 'predictThermodynamicEnhancosomeModel.py']                  # The name of your scipt, and also the command you'll be using for calling it
+     scripts=['collapsePromoters.py','mergeSeqsByBowtie.py','seqsToOHC.py','translateSequencesByDict.py','alignFastqsIntoSeqs.py','makeThermodynamicEnhancosomeModel.py', 'predictThermodynamicEnhancosomeModel.py','startCRMServer.py','makeThermodynamicEnhancosomeModelFromCkpt.py','GASeqDesign.py']                  # The name of your scipt, and also the command you'll be using for calling it
 )

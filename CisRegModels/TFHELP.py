@@ -42,15 +42,25 @@ class BatchGetterOneHot(BasicBatchGetter):
 		self.numRuns= numRuns;
 		self.seqLen= seqLen;
 		self.curFH = MYUTILS.smartGZOpen(self.inFP,'r')
+		self.nextline = self.curFH.readline()
 		self.curThread = Thread(target = self.prepareNextBatch);
 		self.curThread.start()
 	def prepareNextBatch(self):
+		if self.numRuns==0: 
+			self.nextBatchX=None;
+			self.nextBatchY=None;
+			return
 		self.nextBatchX = np.zeros((self.batchSize,4,self.seqLen,1))
 		self.nextBatchY = np.zeros((self.batchSize))
 		b=0
 		while b < self.batchSize:
-			line = self.curFH.readline()
-			if line =="":
+			if self.nextline is None or self.nextline[0]=="#": continue
+			curData = np.fromstring(self.nextline, dtype=float, sep="\t")
+			self.nextBatchY[b]=curData[0];
+			self.nextBatchX[b,:,:,0] = curData[1:].reshape((4,self.seqLen))
+			b+=1
+			self.nextline = self.curFH.readline()
+			if self.nextline =="":
 				if self.numRuns==1:
 					self.nextBatchX = self.nextBatchX[0:b,:,:,:]
 					self.nextBatchY = self.nextBatchY[0:b]
@@ -59,12 +69,7 @@ class BatchGetterOneHot(BasicBatchGetter):
 				self.curFH.close();
 				self.curFH = MYUTILS.smartGZOpen(self.inFP,'r')
 				self.numRuns-=1;
-				line = self.curFH.readline()
-			if line is None or line[0]=="#": continue
-			curData = np.fromstring(line, dtype=float, sep="\t")
-			self.nextBatchY[b]=curData[0];
-			self.nextBatchX[b,:,:,0] = curData[1:].reshape((4,self.seqLen))
-			b+=1
+				self.nextline = self.curFH.readline()
 
 
 class BatchGetter(BasicBatchGetter):

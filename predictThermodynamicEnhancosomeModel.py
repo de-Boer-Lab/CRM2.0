@@ -29,11 +29,14 @@ parser.add_argument('-nta',dest='noTrainActivities', action='count',help='make T
 parser.add_argument('-ntp',dest='noTrainPotentiations', action='count',help='make TF potentiations constant (i.e. whatever potentiations are input)?', required=False, default=0);
 parser.add_argument('-ntm',dest='noTrainMotifs', action='count',help='Don\'t change the motif layer of variables?', required=False, default=0);
 parser.add_argument('-ntbl',dest='noTrainBL', action='count',help='Don\'t change the binding limits?', required=False, default=0);
+parser.add_argument('-dotf',dest='dropoutTF',	metavar='dropoutTF>',help='Dropout a specific TF by setting the concentration to 0', required=False);
 parser.add_argument('-t',dest='threads',	metavar='<threads>',help='Number of threads to make use of [default=1]',default = "1", required=False);
 parser.add_argument('-o',dest='outFP', metavar='<outFile>',help='Where to output results [default=stdout]', required=False);
 parser.add_argument('-ob',dest='outputBinding', action='count',help='Output binding score intermediates?', required=False, default=0);
+parser.add_argument('-oKd',dest='outputKdMat', action='count',help='Output Kd matrix [warning: this makes files big]', required=False, default=0);
 parser.add_argument('-l',dest='logFP', metavar='<logFile>',help='Where to output errors/warnings [default=stderr]', required=False);
 parser.add_argument('-v',dest='verbose', action='count',help='Verbose output?', required=False, default=0);
+parser.add_argument('-desc',dest='describeModel', action='count',help='Print a description of the model and then exit.', required=False, default=0);
 #sys.argv = "predictThermodynamicEnhancosomeModel.py  -res ../../PBound_learned_params_pTpA_ACP_OHC.txt.ckpt -i 20160613_RefinedTSSs_Scer_20160203_R64_goodR_TSS-before-ATG_-190_to_-80.OHC.txt.gz -o test.txt  -v -v -v  -t 1 -b 1024  -ntm -po -nm 244 -sl 110".split();
 #sys.argv = "predictThermodynamicEnhancosomeModel.py -i 20161024_average_promoter_ELs_per_seq_3p1E7_Gly_ALL.shuffled_OHC_test.txt.gz -res EBound_progressive_learning_pTpA_Gly.ACPM.ckpt -o test.txt -v -v -v -t 1 -b 1024 -sl 110 -nm 245 -ml 25 -po".split();
 #sys.argv = "predictThermodynamicEnhancosomeModel.py -i 20161024_average_promoter_ELs_per_seq_3p1E7_Gly_ALL.shuffled_OHC_test.txt.gz -res EBound_progressive_learning_pTpA_Gly.A.ckpt -o test.txt -v -v -v -t 1 -b 1024 -sl 110 -nm 245 -ml 25 -ntm -ntc".split();
@@ -55,6 +58,9 @@ args.activityClasses = int(args.activityClasses);
 
 import SETUPOHCENHANCOSOMEMODEL;
 myCRM = SETUPOHCENHANCOSOMEMODEL.CRM(args);
-myCRM.testModel()
+if args.describeModel>0:
+	myCRM.describeModel();
+else:
+	myCRM.testModel()
 
 
