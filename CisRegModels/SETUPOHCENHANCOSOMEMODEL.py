@@ -39,7 +39,8 @@ class CRM:
 			if "epBoundTensorRC:0" in varNames:
 				self.args.trainStrandedActivities=1
 				self.epBoundTensorRC = tf.get_default_graph().get_tensor_by_name("epBoundTensorRC:0")
-		if "seqPotentialTensor:0" in varNames:
+		tensorNames = [n.name for n in tf.get_default_graph().as_graph_def().node];
+		if "seqPotentialTensor:0" in tensorNames or "seqPotentialTensor" in tensorNames:
 			self.args.potentiation=1
 			self.seqPotentialTensor = tf.get_default_graph().get_tensor_by_name("seqPotentialTensor:0")
 		if self.args.dropoutTF is not None:
