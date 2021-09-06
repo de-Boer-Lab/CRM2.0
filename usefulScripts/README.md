@@ -20,7 +20,11 @@ use UGES; submitlog -m 40 -n 2 -g 1 -o process.pTpA_SC-Ura.ACPMBOL.olog "./proce
 use UGES; submitlog -m 40 -n 2 -g 0 -o predictOn1002YeastGenomeOrthopros.SCUra.olog "predictThermodynamicEnhancosomeModel.py -i  20190719_1002_yeast_genomes/orthoNative80.2.110.OHC.seq.gz  -o 20190719_1002_yeast_genomes/orthoNative80.pTpA_SCUra.preds.gz  -v -v -v  -M EBound2_progressive_learning_pTpA_SC-Ura.ACPMBOL.Model  -sl 110  -b 256 -t 2 "
 submitlog -n 2 -m 50 -g 0 -t /home/unix/cgdeboer/CIS-BP/YeTFaSCo/allTF_PKdMFiles_polyA_and_FZF1.txt  -o calcGiniByTFDropout_P1.orthopros.SCUra.olog ./calcGiniByTFDropout_P1.bat /home/unix/cgdeboer/CIS-BP/YeTFaSCo/allTF_PKdMFiles_polyA_and_FZF1.txt 20190719_1002_yeast_genomes/20190719_TF_Dropout/all.SCUra.out  EBound2_progressive_learning_pTpA_SC-Ura.ACPMBOL  20190719_1002_yeast_genomes/orthoNative80.2.110.OHC.seq.gz
 paste 20190719_1002_yeast_genomes/20190719_TF_Dropout//all.SCUra.out.EBound2_progressive_learning_pTpA_SC-Ura.ACPMBOL.*.out | awk 'BEGIN{OFS="\t"}{ for (i=3;i<=NF;i+=2) $i="" } 1' | sed 's/\t\t/\t/g' | gzip  > 20190719_1002_yeast_genomes/orthopros.SCUra.Gini.dropout.predictions.txt.gz
-# at this point, a file has been created (20190719_1002_yeast_genomes/orthopros.SCUra.Gini.dropout.predictions.txt.gz) that contains the regulatory interactions with which to calculate the regulatory complexity
+# at this point, two files have been created that can be used to calculate regulatory complexity
+# 20190719_1002_yeast_genomes/orthopros.SCUra.Gini.dropout.predictions.txt.gz contains the predicted expression levels when each TF is (individually) left out (1 column per TF, 1 row per sequence).
+# orthoNative80.pTpA_SCUra.preds.gz contains the predicted expression levels for the full model (1 row per sequence, "predicted" column.
+# Regulatory interaction strength can be calculated by subtracting the full model's predictions from the predictions when each model is dropped out (full-dropout). Thus, a positive value indicates that the TF increases expression. 
+# To calculate the regulatory complexity, simply calculate 1-Gini(regulatory interaction strengths) for each sequence
 ```
 
 
