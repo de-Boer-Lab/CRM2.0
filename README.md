@@ -7,7 +7,7 @@ We recommend using Anaconda and pip to install this.
 
 This module requires tensorflow (ideally with GPU support since execution time is orders of magnitude slower without GPUs), as well as several other standard python modules (that pip will install).
 
-1. Install CisRegModels:
+1. Install CRM2.0:
 
 `pip install git+https://github.com/de-Boer-Lab/CRM2.0`
 
@@ -20,7 +20,7 @@ This module requires tensorflow (ideally with GPU support since execution time i
 
 2. Move into the main directory
 
-`cd CisRegModels`
+`cd CRM2.0`
 
 3. Run the test.
 
